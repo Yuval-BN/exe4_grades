@@ -59,6 +59,7 @@ class MainWindow(QMainWindow):
             ["ID", "Original Grades", "Corrected Grades"]
         )
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         layout.addWidget(self.table)
 
         self.setCentralWidget(central_widget)
