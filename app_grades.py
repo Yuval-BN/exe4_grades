@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 from About import AboutWindow
+import matplotlib.pyplot as plt
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
@@ -48,6 +49,10 @@ class MainWindow(QMainWindow):
         update_button = QPushButton("Update File")
         update_button.clicked.connect(self.update_file)
         correction_layout.addWidget(update_button)
+
+        stats_button = QPushButton("Grade Breakdown")
+        stats_button.clicked.connect(self.show_breakdown)
+        correction_layout.addWidget(stats_button)
 
         about_button = QPushButton("About")
         about_button.clicked.connect(self.show_about)
@@ -155,6 +160,32 @@ class MainWindow(QMainWindow):
 
             self.update_table()
 
+    def show_breakdown(self):
+        if not self.corrected_grades:
+            return
+
+        counts = [0, 0, 0, 0, 0]
+        labels = ["< 60", "60-69", "70-79", "80-89", "90-100"]
+
+        for i in range(len(self.corrected_grades)):
+            temp = self.corrected_grades[i]
+            if temp < 60:
+                counts[0] += 1
+            elif temp < 70:
+                counts[1] += 1
+            elif temp < 80:
+                counts[2] += 1
+            elif temp < 90:
+                counts[3] += 1
+            else:
+                counts[4] += 1
+        plt.figure("Grade Distribution")
+        plt.bar(labels, counts)
+        plt.xlabel("Grade Range")
+        plt.ylabel("Number of Students")
+        plt.title("Grade Distribution")
+        plt.yticks(range(0, max(counts) + 2))
+        plt.show()
 
 app = QApplication([])
 window = MainWindow()
