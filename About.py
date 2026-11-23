@@ -24,6 +24,10 @@ class AboutWindow(QWidget):
         link_label = QLabel('<a href="https://www.facebook.com/yuval.bennatan">My Facebook Profile</a>')
         link_label.setOpenExternalLinks(True)
         layout.addWidget(link_label)
+
+        github_label = QLabel('<a href="https://github.com/Yuval-BN/exe4_grades">GitHub Repository</a>')
+        github_label.setOpenExternalLinks(True)
+        layout.addWidget(github_label)
         
         self.setLayout(layout)
 if __name__ == '__main__':
