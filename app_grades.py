@@ -1,3 +1,7 @@
+import os
+import subprocess
+import sys
+from About import AboutWindow
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
@@ -8,30 +12,11 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QTableWidget,
+    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 from PySide6.QtGui import QIntValidator, QPixmap
-
-
-class AboutWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("About")
-
-        layout = QVBoxLayout(self)
-
-        image_label = QLabel()
-        image_label.setPixmap(QPixmap())
-        layout.addWidget(image_label)
-
-        layout.addWidget(QLabel("Name: [Your Name]"))
-        layout.addWidget(QLabel("GitHub: [GitHub Repository URL]"))
-
-        close_button = QPushButton("Close")
-        close_button.clicked.connect(self.close)
-        layout.addWidget(close_button)
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -83,6 +68,36 @@ class MainWindow(QMainWindow):
 
     def update_file(self):
         pass
+
+    def update_table(self):
+        self.table.clearContents()
+        for row, student_id in enumerate(self.student_ids):
+            self.table.setItem(row, 0, QTableWidgetItem(str(student_id)))
+
+            if row < len(self.original_grades):
+                self.table.setItem(
+                    row,
+                    1,
+                    QTableWidgetItem(str(self.original_grades[row])),
+                )
+
+            if row < len(self.corrected_grades):
+                self.table.setItem(
+                    row,
+                    2,
+                    QTableWidgetItem(str(self.corrected_grades[row])),
+                )
+
+    def open_file(self):
+        if not self.selected_file:
+            return
+
+        if sys.platform == "win32":
+            os.startfile(self.selected_file)
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", self.selected_file])
+        else:
+            subprocess.Popen(["xdg-open", self.selected_file])
 
     def show_about(self):
         self.about_window = AboutWindow()
