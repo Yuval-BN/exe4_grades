@@ -112,6 +112,23 @@ class MainWindow(QMainWindow):
         )
         if selected_file:
             self.selected_file = selected_file
+            self.student_ids = []
+            self.original_grades = []
+            self.corrected_grades = []
+
+            with open(self.selected_file, "r") as f:
+                lines = f.readlines()
+
+            for i in range(1, len(lines)):
+                line = lines[i].strip()
+                if line:
+                    temp = line.split(",")
+                    self.student_ids.append(temp[0])
+                    grade = int(temp[1])
+                    self.original_grades.append(grade)
+                    self.corrected_grades.append(grade)
+
+            self.update_table()
 
 
 app = QApplication([])
