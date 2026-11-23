@@ -64,7 +64,23 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     def apply_correction(self):
-        pass
+        text = self.correction_input.text()
+        if text == "" or text == "-":
+            return
+
+        points = int(text)
+        self.corrected_grades = []
+
+        for i in range(len(self.original_grades)):
+            temp = self.original_grades[i] + points
+            if temp > 100:
+                temp = 100
+            elif temp < 0:
+                temp = 0
+            self.corrected_grades.append(temp)
+
+        self.update_table()
+        
 
     def update_file(self):
         pass
