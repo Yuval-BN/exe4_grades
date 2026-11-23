@@ -84,7 +84,15 @@ class MainWindow(QMainWindow):
         
 
     def update_file(self):
-        pass
+        if not self.selected_file:
+            return
+
+        with open(self.selected_file, "w") as f:
+            f.write("ID,Grade\n")
+            for i in range(len(self.student_ids)):
+                f.write(f"{self.student_ids[i]},{self.corrected_grades[i]}\n")
+
+        self.open_file()
 
     def update_table(self):
         self.table.clearContents()
